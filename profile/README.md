@@ -15,6 +15,7 @@
   <img alt="Admin und Partner" src="https://img.shields.io/badge/Admin%20%26%20Partner-Vue%203-42B883?logo=vuedotjs&logoColor=white">
   <img alt="Desktop" src="https://img.shields.io/badge/Desktop-Tauri%20v2-24C8DB?logo=tauri&logoColor=white">
   <img alt="Datenbank" src="https://img.shields.io/badge/Daten-MongoDB-47A248?logo=mongodb&logoColor=white">
+  <a href="https://github.com/orgs/fixplay-orga/packages"><img alt="Packages" src="https://img.shields.io/badge/Packages-GHCR-2496ED?logo=docker&logoColor=white"></a>
 </p>
 
 ---
