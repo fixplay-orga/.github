@@ -122,7 +122,7 @@ flowchart LR
 | Repository | Zweck | Stack | Auslieferung |
 |---|---|---|---|
 | [`fixplay-backend`](https://github.com/fixplay-orga/fixplay-backend) | Public API (`:7000`, Firebase JWT) und Admin API (`:7100`, Basic Auth) | Go 1.25 · Echo · MongoDB | Container-Images `v*` |
-| [`fixplay-frontend`](https://github.com/fixplay-orga/fixplay-frontend) | Kundenshop und Reparaturplattform auf fixplay.de | Nuxt 4 · Nitro-BFF · OpenAPI-Contract | Coolify, `prod`-Branch |
+| [`fixplay-frontend`](https://github.com/fixplay-orga/fixplay-frontend) | Kundenshop und Reparaturplattform auf fixplay.de | Nuxt 4 · Nitro-BFF · OpenAPI-Contract | Web-Image `web-v*` |
 | [`fixplay-frontend-admin`](https://github.com/fixplay-orga/fixplay-frontend-admin) | Admin-Dashboard im Browser und als Android-App | Vue 3 · PrimeVue · Capacitor | Web-Image + APK |
 | [`fixplay-frontend-partners`](https://github.com/fixplay-orga/fixplay-frontend-partners) | Partner-Portal für Sucher und Vertrieb | Vue 3 · Firebase Auth | Web-Image `web-v*` |
 | [`fixplay-diagnoseTool`](https://github.com/fixplay-orga/fixplay-diagnoseTool) | Desktop-Tool für NOR-Flash, UART, I²C und Controller-Diagnose | Tauri v2 · Rust · Svelte 5 | GitHub Releases (Win/Linux, AUR) |
@@ -155,6 +155,7 @@ Reiter **Packages** dieser Organisation:
 | `ghcr.io/fixplay-orga/fixplay-public-api` | `fixplay-backend` | `v*`, `latest` |
 | `ghcr.io/fixplay-orga/fixplay-admin-api` | `fixplay-backend` | `v*`, `latest` |
 | `ghcr.io/fixplay-orga/fixplay-frontend-admin` | `fixplay-frontend-admin` | `web-v*`, `latest` |
+| `ghcr.io/fixplay-orga/fixplay-frontend` | `fixplay-frontend` | `web-v*`, `latest` |
 | `ghcr.io/fixplay-orga/fixplay-frontend-partners` | `fixplay-frontend-partners` | `web-v*`, `latest` |
 
 Die Workflows leiten den Namensraum aus `${{ github.repository_owner }}` ab —
