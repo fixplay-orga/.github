@@ -26,9 +26,11 @@ Werkstatt-Alltag — von der öffentlichen Website über die Auftragsabwicklung 
 Backoffice bis zur Hardware-Diagnose auf dem Werktisch:
 
 - **Kundenshop und Reparaturannahme** auf [fixplay.de](https://fixplay.de):
-  Preisanfrage, Auftrag, Versand, Zahlung und Statusverfolgung.
-- **Backoffice** für Werkstatt, Lager und Rechnungen — im Browser und als
-  Android-App, im Produktivbetrieb nur über VPN erreichbar.
+  Preisanfrage, Auftrag, Versand, Zahlung, Statusverfolgung und aktuelle
+  Kampagnen-Banner.
+- **Backoffice** für Werkstatt, Lager, Rechnungen und eBay-Angebote (anlegen,
+  veröffentlichen, beenden) — im Browser und als Android-App, im
+  Produktivbetrieb nur über VPN erreichbar.
 - **Partner-Portal** für Sucher und Vertrieb mit eigenen Rechten und
   Sichtbarkeiten.
 - **diagnoseTool** für NOR-Flash, UART, I²C und Controller-Diagnose direkt an
@@ -40,11 +42,11 @@ Backoffice bis zur Hardware-Diagnose auf dem Werktisch:
   <tr>
     <td width="50%" align="center">
       <img src="assets/screenshots/home.png" alt="Fixplay Startseite"><br>
-      <sub><strong>fixplay.de</strong> — Reparaturannahme mit Live-Preisberatung</sub>
+      <sub><strong>fixplay.de</strong> — Reparatur, Refurbished-Shop und aktuelle Kampagnen</sub>
     </td>
     <td width="50%" align="center">
-      <img src="assets/screenshots/services.png" alt="Leistungen und Preise"><br>
-      <sub><strong>Leistungen</strong> — Plattform, Fehlerbild und Preis auf einen Blick</sub>
+      <img src="assets/screenshots/service-finder.png" alt="Preisanfrage im Service-Finder"><br>
+      <sub><strong>Preisanfrage</strong> — in vier Schritten zu Marke, Gerät und Preis</sub>
     </td>
   </tr>
   <tr>
@@ -55,6 +57,12 @@ Backoffice bis zur Hardware-Diagnose auf dem Werktisch:
     <td width="50%" align="center">
       <img src="assets/screenshots/admin-login.png" alt="Fixplay Administration"><br>
       <sub><strong>Administration</strong> — Werkstatt, Lager und Rechnungen (VPN)</sub>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <img src="assets/screenshots/partners.png" alt="Fixplay Partner-Portal"><br>
+      <sub><strong>Partner-Portal</strong> — Suchaufträge, gemeldete Deals und Richtpreise; Zugang nur für freigegebene Partner</sub>
     </td>
   </tr>
 </table>
