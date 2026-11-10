@@ -16,6 +16,7 @@
   <img alt="Desktop" src="https://img.shields.io/badge/Desktop-Tauri%20v2-24C8DB?logo=tauri&logoColor=white">
   <img alt="Datenbank" src="https://img.shields.io/badge/Daten-MongoDB-47A248?logo=mongodb&logoColor=white">
   <a href="https://github.com/orgs/fixplay-orga/packages"><img alt="Packages" src="https://img.shields.io/badge/Packages-GHCR-2496ED?logo=docker&logoColor=white"></a>
+  <img alt="Deployment" src="https://img.shields.io/badge/Deployment-Coolify-6B4FBB">
 </p>
 
 ---
@@ -125,6 +126,7 @@ flowchart LR
 | [`fixplay-frontend`](https://github.com/fixplay-orga/fixplay-frontend) | Kundenshop und Reparaturplattform auf fixplay.de | Nuxt 4 · Nitro-BFF · OpenAPI-Contract | Web-Image `web-v*` |
 | [`fixplay-frontend-admin`](https://github.com/fixplay-orga/fixplay-frontend-admin) | Admin-Dashboard im Browser und als Android-App | Vue 3 · PrimeVue · Capacitor | Web-Image + APK |
 | [`fixplay-frontend-partners`](https://github.com/fixplay-orga/fixplay-frontend-partners) | Partner-Portal für Sucher und Vertrieb | Vue 3 · Firebase Auth | Web-Image `web-v*` |
+| [`fixplay-backup`](https://github.com/fixplay-orga/fixplay-backup) | Wartungs- und Ausweichseite für fixplay.de | Statisches HTML · nginx | Container-Image `v*` / `latest` |
 | [`fixplay-diagnoseTool`](https://github.com/fixplay-orga/fixplay-diagnoseTool) | Desktop-Tool für NOR-Flash, UART, I²C und Controller-Diagnose | Tauri v2 · Rust · Svelte 5 | GitHub Releases (Win/Linux, AUR) |
 | [`ql700-printserver`](https://github.com/fixplay-orga/ql700-printserver) | Etikettendruck-Server für den Brother QL-700 | Python · FastAPI · pyusb | systemd auf dem Print-Pi |
 
@@ -141,10 +143,10 @@ gemeinsame Namensraum. Der Ablauf ist derselbe:
 
 ```mermaid
 flowchart LR
-  TAG["Git-Tag<br/>v1.2.3 oder web-v0.4.0"] --> CI["GitHub Actions<br/>Build · Tests · Signatur"]
+  TAG["Git-Tag<br/>v1.2.3 oder web-v0.4.0"] --> CI["GitHub Actions<br/>Build · Tests · Image"]
   CI --> GHCR["GHCR<br/>ghcr.io/fixplay-orga/…"]
   CI --> REL["GitHub Release<br/>Artefakte · Changelog"]
-  GHCR --> DEPLOY["Coolify / Compose<br/>Server zieht Image"]
+  GHCR -->|pull| DEPLOY["Coolify<br/>Redeploy der Resources"]
 ```
 
 Sobald ein Release-Tag gesetzt wird, erscheinen die Images automatisch im
@@ -157,11 +159,39 @@ Reiter **Packages** dieser Organisation:
 | `ghcr.io/fixplay-orga/fixplay-frontend-admin` | `fixplay-frontend-admin` | `web-v*`, `latest` |
 | `ghcr.io/fixplay-orga/fixplay-frontend` | `fixplay-frontend` | `web-v*`, `latest` |
 | `ghcr.io/fixplay-orga/fixplay-frontend-partners` | `fixplay-frontend-partners` | `web-v*`, `latest` |
+| `ghcr.io/fixplay-orga/fixplay-backup` | `fixplay-backup` | `v*`, `latest` |
 
 Die Workflows leiten den Namensraum aus `${{ github.repository_owner }}` ab —
 neue Pakete landen also ohne weitere Änderung in der Organisation. Bereits
 vorhandene Images aus der Zeit vor dem Umzug behalten ihren alten Namespace,
 bis sie neu getaggt oder in den Einstellungen des Packages übertragen werden.
+
+## Deployment mit Coolify
+
+Produktiv laufen die Dienste auf einem **Coolify**-Server. Coolify zieht die
+fertig gebauten Images aus GHCR und startet sie mit den Runtime-Variablen der
+jeweiligen Resource — auf dem Zielhost wird **nichts gebaut**. Einen
+SSH- oder Compose-Deploy aus der CI gibt es nicht mehr.
+
+- **Ablauf:** Tag pushen → GitHub Actions testet, baut und pusht das Image →
+  Coolify zieht den neuen Tag und startet den Container neu.
+- **Auto-Deploy (optional):** Ist im Repository das Secret `COOLIFY_WEBHOOK`
+  (und bei geschützter API zusätzlich `COOLIFY_TOKEN`) gesetzt, löst der
+  Release-Workflow den Redeploy über die Coolify-API aus. Ohne diese Secrets
+  endet der Job grün; der Deploy bleibt dann manuell (Tag in Coolify setzen
+  und „Redeploy“ drücken).
+- **Private Images:** Die GHCR-Pakete sind privat. Der Coolify-Server braucht
+  einmalig einen classic PAT mit `read:packages` und einen
+  `docker login ghcr.io` (Details in den `docs/COOLIFY.md` bzw.
+  `docs/DEPLOYMENT.md` der Repositories).
+- **Konfiguration:** ausschließlich über Umgebungsvariablen der
+  Coolify-Resource. Ein Image ist für alle Umgebungen identisch; Änderungen an
+  Werten brauchen nur einen Redeploy, kein neues Release.
+- **Rollback:** älteren `v*`- bzw. `web-v*`-Tag in Coolify setzen und neu
+  deployen. Die historischen Tags bleiben in GHCR erhalten.
+- **Netz:** fixplay.de, die Public API und die Partner-Anmeldung sind
+  öffentlich; Admin-Dashboard, Admin-API und interne Bereiche liegen hinter
+  dem WireGuard-VPN.
 
 ## Arbeitsweise
 
@@ -176,9 +206,9 @@ bis sie neu getaggt oder in den Einstellungen des Packages übertragen werden.
   Vitest, MSW und Docker-Rezepte für reproduzierbare Builds.
 - **Deutsch als Produktsprache**, Code, Kommentare und Commits auf Englisch —
   mit deutschen Fachbegriffen dort, wo sie eindeutiger sind.
-- **Release über Tags, nicht über Handarbeit:** `v*` fürs Backend und
-  diagnoseTool, `web-v*` für Web-Images. `prod` wird nur per Pull Request
-  aktualisiert.
+- **Release über Tags, nicht über Handarbeit:** `v*` für Backend, Backup-Seite
+  und diagnoseTool, `web-v*` für Web-Images. `main` ist der Integrationsbranch;
+  ausgeliefert wird ausschließlich über Tags und die daraus gebauten Images.
 
 ## Sicherheit
 

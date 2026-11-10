@@ -21,6 +21,11 @@ alle anderen Repositories die Rechte des Eigentümers.
 
 ## Release
 
-Versionen werden über Git-Tags ausgeliefert (`v*` im Backend und im
-diagnoseTool, `web-v*` für Web-Images). Nicht eigenmächtig taggen oder
-veröffentlichen.
+Versionen werden über Git-Tags ausgeliefert (`v*` im Backend, in der
+Backup-Seite und im diagnoseTool, `web-v*` für Web-Images). Nicht eigenmächtig
+taggen oder veröffentlichen.
+
+Die Tags bauen in GitHub Actions Container-Images und legen ein GitHub-Release
+an. Ausgerollt wird über **Coolify**, das die fertigen Images aus GHCR zieht —
+es gibt keinen SSH- oder Compose-Deploy aus der CI. Details stehen im
+[Organisationsprofil](profile/README.md#deployment-mit-coolify).
